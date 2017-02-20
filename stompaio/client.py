@@ -42,7 +42,8 @@ class StompClient(dispatcher):
 class Frame(object):
     @staticmethod
     def from_str(string):
-        return Frame('CONNECT')
+        command = string.split('\n', 1)[0]
+        return Frame(command=command)
 
     def __init__(self, command):
         self.command = command
