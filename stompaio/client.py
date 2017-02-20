@@ -40,10 +40,20 @@ class StompClient(dispatcher):
 
 
 class Frame(object):
-    @staticmethod
-    def from_str(string):
-        command = string.split('\n', 1)[0]
-        return Frame(command=command)
 
-    def __init__(self, command):
+    @staticmethod
+    def from_str(frame_str):
+        command, _, rest = frame_str.partition('\n')
+        headers_txt, _, body = rest.partition('\n\n')
+        headers = {}
+        for header_txt in headers_txt.split('\n'):
+            header, _, value = header_txt.partition(':')
+            headers[header] = value
+        return Frame(command=command, headers=headers)
+
+    def __init__(self, command, headers=None):
         self.command = command
+        self.headers = headers
+
+    def header(self, header):
+        return self.headers.get(header, None)
