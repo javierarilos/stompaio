@@ -37,3 +37,12 @@ class StompClient(dispatcher):
         print('>>> handle_write')
         sent = self.send(self.buffer)
         self.times -= 1
+
+
+class Frame(object):
+    @staticmethod
+    def from_str(string):
+        return Frame('CONNECT')
+
+    def __init__(self, command):
+        self.command = command
